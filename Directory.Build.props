@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Lista de códigos de aviso para ignorar separados por ponto e vírgula -->
+    <NoWarn>$(NoWarn);CS8618</NoWarn>
+  </PropertyGroup>
+</Project>

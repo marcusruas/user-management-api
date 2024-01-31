@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutenticacaoMarcusApi.SharedKernel.Retornos;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AutenticacaoMarcusApi.Presentation.Controllers
 {
     [Route("api/grupos")]
-    public class GruposController : Controller
+    public class GruposController : StandardController
     {
+        public GruposController(IMediator mediador) : base(mediador) { }
+
         [HttpGet]
-        public IActionResult Index()
+        public string Index()
         {
-            return View();
+            return "teste";
         }
     }
 }
