@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AutenticacaoMarcusApi.SharedKernel.Retornos
 {
-    public class ErroInternoException : ControlledException
+    public class ErroInternoException : MensageriaException
     {
         public ErroInternoException()
         {

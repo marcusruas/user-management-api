@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AutenticacaoMarcusApi.SharedKernel.Mensageria
 {
-    public class Mensageria : IMensageria
+    internal class Mensageria : IMensageria
     {
         public Mensageria()
         {

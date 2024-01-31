@@ -11,17 +11,17 @@ namespace AutenticacaoMarcusApi.SharedKernel.Retornos
     {
         public StandardController(IMediator mediador)
         {
-            _mediador = mediador;
+            Mediador = mediador;
         }
 
-        protected readonly IMediator _mediador;
+        protected readonly IMediator Mediador;
 
         /// <summary>
         /// Passa o objeto do tipo <see cref="IRequest" /> para o mediador do tipo <see cref="IMediator"/> e retorna a resposta formatada pronta para o endpoint
         /// </summary>
         protected async Task<RetornoApi<T>> ProcessarSolicitacao<T>(IRequest<T> solicitacao)
         {
-            var retorno = await _mediador.Send(solicitacao);
+            var retorno = await Mediador.Send(solicitacao);
             return RespostaPadrao(retorno);
         }
 

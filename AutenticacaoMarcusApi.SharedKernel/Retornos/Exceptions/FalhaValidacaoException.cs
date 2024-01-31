@@ -1,6 +1,6 @@
 ﻿namespace AutenticacaoMarcusApi.SharedKernel.Retornos
 {
-    public class FalhaValidacaoException : ControlledException
+    public class FalhaValidacaoException : MensageriaException
     {
         public FalhaValidacaoException()
         {
