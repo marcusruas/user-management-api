@@ -1,4 +1,5 @@
-﻿using AutenticacaoMarcusApi.SharedKernel.Retornos;
+﻿using AutenticacaoMarcusApi.Features.Grupos.Requests.CadastrarGrupo;
+using AutenticacaoMarcusApi.SharedKernel.Retornos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,8 @@ namespace AutenticacaoMarcusApi.Presentation.Controllers
     {
         public GruposController(IMediator mediador) : base(mediador) { }
 
-        [HttpGet]
-        public string Index()
-        {
-            return "teste";
-        }
+        [HttpPost]
+        public async Task<RetornoApi<bool>> CadastrarGrupo([FromBody] CadastrarGrupoRequest request)
+            => await ProcessarSolicitacao(request);
     }
 }

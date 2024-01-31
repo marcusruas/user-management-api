@@ -1,5 +1,7 @@
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using static AutenticacaoMarcusApi.SharedKernel.DependencyInjection;
+using static AutenticacaoMarcusApi.Features.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,8 @@ builder.Services.AddSwaggerGen(cnf => {
     });
 });
 builder.Services.AdicionarMensageria();
+builder.Services.AddFeatures();
+
 
 var app = builder.Build();
 
