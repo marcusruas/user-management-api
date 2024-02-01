@@ -4,3 +4,4 @@ global using AutenticacaoMarcusApi.SharedKernel.Extensions;
 global using static AutenticacaoMarcusApi.SharedKernel.Extensions.AspNetCoreExtensions;
 global using static AutenticacaoMarcusApi.SharedKernel.Extensions.EnumExtensions;
 global using static AutenticacaoMarcusApi.SharedKernel.Extensions.StringExtensions;
+global using Nelibur.ObjectMapper;

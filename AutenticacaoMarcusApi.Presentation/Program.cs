@@ -2,13 +2,13 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using static AutenticacaoMarcusApi.SharedKernel.DependencyInjection;
 using static AutenticacaoMarcusApi.Features.DependencyInjection;
+using AutenticacaoMarcusApi.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers(x => x.AdicionarFiltros());
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(cnf => {
     cnf.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "AutenticacaoMarcusAPI" });
@@ -39,13 +39,17 @@ builder.Services.AddSwaggerGen(cnf => {
         }
     });
 });
+
+var connectionString = builder.Configuration.GetConnectionString("AutenticacaoDB");
+builder.Services.AddDbContext<AutenticacaoDbContext>(x => x.UseSqlServer(connectionString));
+
 builder.Services.AdicionarMensageria();
 builder.Services.AddFeatures();
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+CreateDatabase(app);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -59,3 +63,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void CreateDatabase(WebApplication app)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AutenticacaoDbContext>();
+        dbContext.Database.EnsureCreated();
+    }
+}
