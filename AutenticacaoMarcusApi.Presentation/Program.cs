@@ -4,6 +4,8 @@ using static AutenticacaoMarcusApi.SharedKernel.DependencyInjection;
 using static AutenticacaoMarcusApi.Features.DependencyInjection;
 using AutenticacaoMarcusApi.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,11 +42,13 @@ builder.Services.AddSwaggerGen(cnf => {
     });
 });
 
-var connectionString = builder.Configuration.GetConnectionString("AutenticacaoDB");
-builder.Services.AddDbContext<AutenticacaoDbContext>(x => x.UseSqlServer(connectionString));
+var connectionStringAutenticacaoDB = builder.Configuration.GetConnectionString("AutenticacaoDB");
+builder.Services.AddDbContext<AutenticacaoDbContext>(x => x.UseSqlServer(connectionStringAutenticacaoDB));
 
 builder.Services.AdicionarMensageria();
 builder.Services.AddFeatures();
+
+AddLogs(builder);
 
 var app = builder.Build();
 
@@ -63,6 +67,22 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void AddLogs(WebApplicationBuilder builder)
+{
+    var connectionStringLogsDB = builder.Configuration.GetConnectionString("LogsDB");
+
+    var logOptions = new MSSqlServerSinkOptions();
+    logOptions.AutoCreateSqlTable = true;
+    logOptions.TableName = "AutenticacaoLogs";
+    
+    Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Warning()
+                .WriteTo.MSSqlServer(connectionStringLogsDB, logOptions)
+                .CreateLogger();
+
+    builder.Logging.AddSerilog(Log.Logger);
+}
 
 void CreateDatabase(WebApplication app)
 {
