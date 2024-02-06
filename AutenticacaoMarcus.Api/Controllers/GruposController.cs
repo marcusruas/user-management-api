@@ -9,7 +9,7 @@ using Azure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AutenticacaoMarcus.Presentation.Controllers
+namespace AutenticacaoMarcus.Api.Controllers
 {
     [Route("api/grupos")]
     public class GruposController : StandardController

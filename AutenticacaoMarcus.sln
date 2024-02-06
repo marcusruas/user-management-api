@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoMarcus.Presentation", "AutenticacaoMarcus.Presentation\AutenticacaoMarcus.Presentation.csproj", "{279275A6-EE4C-417B-98C0-26FDF44758F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoMarcus.Api", "AutenticacaoMarcus.Api\AutenticacaoMarcus.Api.csproj", "{279275A6-EE4C-417B-98C0-26FDF44758F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoMarcus.Domain", "AutenticacaoMarcus.Domain\AutenticacaoMarcus.Domain.csproj", "{E3D736C8-2D1A-43DC-89D5-F4574DCB2796}"
 EndProject
