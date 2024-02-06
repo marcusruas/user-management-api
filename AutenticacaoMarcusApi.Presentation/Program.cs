@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using static AutenticacaoMarcusApi.SharedKernel.DependencyInjection;
 using static AutenticacaoMarcusApi.Features.DependencyInjection;
+using static AutenticacaoMarcusApi.Features.Bindings;
 using AutenticacaoMarcusApi.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -45,6 +46,7 @@ builder.Services.AddSwaggerGen(cnf => {
 var connectionStringAutenticacaoDB = builder.Configuration.GetConnectionString("AutenticacaoDB");
 builder.Services.AddDbContext<AutenticacaoDbContext>(x => x.UseSqlServer(connectionStringAutenticacaoDB));
 
+CriarBindingsParaFeatures();
 builder.Services.AdicionarMensageria();
 builder.Services.AddFeatures();
 
