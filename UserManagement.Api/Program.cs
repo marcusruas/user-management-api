@@ -14,7 +14,7 @@ builder.Services.AddControllers(x => x.AddFilters());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(cnf => {
-    cnf.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "AutenticacaoMarcus" });
+    cnf.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "UserManagement" });
     cnf.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"Authentication Header via Json Web Tokens (JWT). Insert your JWT Token in the following way: 'Bearer 12345abcdef'",
@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen(cnf => {
     });
 });
 
-var dbContextCnn = builder.Configuration.GetConnectionString("AuthenticationDB");
+var dbContextCnn = builder.Configuration.GetConnectionString("UserManagementDB");
 builder.Services.AddDbContext<UserManagerDbContext>(x => x.UseSqlServer(dbContextCnn));
 
 CreateBindings();
