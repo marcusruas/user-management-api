@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserManagement.Domain.Users.Entities;
+using UserManagement.SharedKernel.Returns.Handlers;
 
 namespace UserManagement.Infrastructure.Context
 {
-    public class UserManagerDbContext : DbContext
+    public class UserManagerDbContext : StandardContext<UserManagerDbContext>
     {
-        public UserManagerDbContext(DbContextOptions options) : base(options) { }
+        public UserManagerDbContext(DbContextOptions<UserManagerDbContext> options) : base(options) { }
 
         public DbSet<Role> Roles { get; set; }
 

@@ -18,6 +18,7 @@ namespace UserManagement.SharedKernel.Retornos.Models
 
         public Guid Id { get; private set; }
         public DateTime CreatedDate { get; private set; }
+        public DateTime? UpdatedDate { get; set; }
         public bool Deleted { get; set; }
     }
 }
