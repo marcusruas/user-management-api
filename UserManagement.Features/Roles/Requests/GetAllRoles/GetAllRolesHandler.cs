@@ -8,26 +8,38 @@ using System.Text;
 using System.Threading.Tasks;
 using UserManagement.SharedKernel.Messaging;
 using UserManagement.Features.Roles.ValueObjects;
+using UserManagement.Infrastructure.Repositories.Roles;
+using UserManagement.Domain.Users.Specifications;
+using UserManagement.Domain.Users.Entities;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace UserManagement.Features.Roles.Requests.GetAllRoles
 {
-    public class GetAllRolesHandler : FeatureHandler<GetAllRolesRequest, IEnumerable<RoleDto>>
+    public class GetAllRolesHandler : FeatureHandler<GetAllRolesRequest, PaginatedList<RoleDto>>
     {
-        public GetAllRolesHandler(UserManagerDbContext context, IMessaging messaging, ILogger<FeatureHandler<GetAllRolesRequest, IEnumerable<RoleDto>>> logger) : base(messaging, logger)
+        public GetAllRolesHandler(IRolesRepository repository, IMessaging messaging, ILogger<FeatureHandler<GetAllRolesRequest, PaginatedList<RoleDto>>> logger) : base(messaging, logger)
         {
-            _context = context;
+            _repository = repository;
         }
 
-        private readonly UserManagerDbContext _context;
+        private readonly IRolesRepository _repository;
+        private PaginatedList<Role> _roles;
+        private PaginatedList<RoleDto> _result;
 
-        public override async Task<IEnumerable<RoleDto>> HandleRequest(GetAllRolesRequest request, CancellationToken cancellationToken)
+        public override async Task<PaginatedList<RoleDto>> HandleRequest(GetAllRolesRequest request, CancellationToken cancellationToken)
         {
-            var roles = await _context.Roles.Where(x => !x.Deleted).ToListAsync();
+            _roles = await _repository.QueryAsync(new SearchAllRolesSpecification(request.Page.Value, request.RecordsPerPage.Value));
 
-            if (roles is null || !roles.Any())
-                return new List<RoleDto>();
+            CastPagination();
 
-            return roles.Select(x => TinyMapper.Map<RoleDto>(x));
+            return _result;
+        }
+
+        private void CastPagination()
+        {
+            var items = _roles.Items.Select(TinyMapper.Map<RoleDto>);
+            _result = PaginatedList<RoleDto>.CreateFromPaginatedList(items, _roles);
         }
     }
 }

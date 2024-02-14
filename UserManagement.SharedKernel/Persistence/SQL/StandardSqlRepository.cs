@@ -27,7 +27,7 @@ namespace UserManagement.SharedKernel.Persistence.SQL
 
         private readonly IConfiguration Configuration;
         private string _sqlFolderPath { get; set; }
-        private const string INFRASTRUCTURE_LAYER = "Infrastructure";
+        private const string INFRASTRUCTURE_LAYER = "Repositories";
         private const string STANDARD_SQL_FOLDER = "SQL";
 
 

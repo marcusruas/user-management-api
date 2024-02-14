@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagement.Features.Roles;
 
 namespace UserManagement.Features
 {
@@ -14,6 +15,11 @@ namespace UserManagement.Features
         {
             servicos.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             return servicos;
+        }
+
+        public static void AddBindings()
+        {
+            RolesBindings.CreateBindings();
         }
     }
 }

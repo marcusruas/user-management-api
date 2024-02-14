@@ -11,13 +11,14 @@ using UserManagement.Features.Roles.Requests.DeleteRole;
 namespace UserManagement.Api.Controllers
 {
     [Route("api/roles")]
+    [Produces("application/json")]
     public class RolesController : StandardController
     {
         public RolesController(IMediator mediador) : base(mediador) { }
 
         [HttpGet]
-        public async Task<ApiResult<IEnumerable<RoleDto>>> GetAllRoles()
-            => await ProcessRequest(new GetAllRolesRequest());
+        public async Task<ApiResult<PaginatedList<RoleDto>>> GetAllRoles([FromQuery] GetAllRolesRequest request)
+            => await ProcessRequest(request);
 
         [HttpGet("{id}")]
         public async Task<ApiResult<RoleDto>> GetRoleById(Guid id)

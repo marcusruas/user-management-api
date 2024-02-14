@@ -9,17 +9,19 @@ using System.Threading.Tasks;
 using UserManagement.Features.Roles.ValueObjects;
 using UserManagement.SharedKernel.Messaging;
 using UserManagement.Domain.Users.Entities;
+using UserManagement.Infrastructure.Repositories.Roles;
+using UserManagement.Domain.Users.Specifications;
 
 namespace UserManagement.Features.Roles.Requests.GetRoleById
 {
     public class GetRoleByIdHandler : FeatureHandler<GetRoleByIdRequest, RoleDto>
     {
-        public GetRoleByIdHandler(UserManagerDbContext context, IMessaging messaging, ILogger<FeatureHandler<GetRoleByIdRequest, RoleDto>> logger) : base(messaging, logger)
+        public GetRoleByIdHandler(IRolesRepository repository, IMessaging messaging, ILogger<FeatureHandler<GetRoleByIdRequest, RoleDto>> logger) : base(messaging, logger)
         {
-            _context = context;
+            _repository = repository;
         }
 
-        private readonly UserManagerDbContext _context;
+        private readonly IRolesRepository _repository;
 
         private Role _requestedRole;
 
@@ -32,7 +34,7 @@ namespace UserManagement.Features.Roles.Requests.GetRoleById
 
         private async Task GetExistingRole(GetRoleByIdRequest request)
         {
-            _requestedRole = await _context.Roles.FirstOrDefaultAsync(x => x.Id == request.Id && !x.Deleted);
+            _requestedRole = await _repository.FirstOrDefaultAsync(new SearchRoleByIdSpecification(request.Id));
 
             if (_requestedRole is null)
                 Messaging.ReturnValidationFailureMessage("The specified role does not exist.");

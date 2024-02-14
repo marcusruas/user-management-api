@@ -8,17 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using UserManagement.SharedKernel.Messaging;
 using UserManagement.Domain.Users.Entities;
+using UserManagement.Infrastructure.Repositories.Roles;
+using UserManagement.Domain.Users.Specifications;
 
 namespace UserManagement.Features.Roles.Requests.UpdateRole
 {
     public class UpdateRoleHandler : FeatureHandler<UpdateRoleRequest, bool>
     {
-        public UpdateRoleHandler(UserManagerDbContext context, IMessaging messaging, ILogger<FeatureHandler<UpdateRoleRequest, bool>> logger) : base(messaging, logger)
+        public UpdateRoleHandler(IRolesRepository repository, IMessaging messaging, ILogger<FeatureHandler<UpdateRoleRequest, bool>> logger) : base(messaging, logger)
         {
-            _context = context;
+            _repository = repository;
         }
 
-        private readonly UserManagerDbContext _context;
+        private readonly IRolesRepository _repository;
 
         private Role _requestedRole;
 
@@ -35,7 +37,7 @@ namespace UserManagement.Features.Roles.Requests.UpdateRole
 
         private async Task ValidateRole(UpdateRoleRequest request)
         {
-            _requestedRole = await _context.Roles.FirstOrDefaultAsync(x => x.Id == request.Id && !x.Deleted);
+            _requestedRole = await _repository.FirstOrDefaultAsync(new SearchExistingRoleSpecification(request.Id, request.Name));
 
             if (_requestedRole is null)
                 Messaging.ReturnErrorMessage("The specified role does not exist.");
@@ -51,8 +53,7 @@ namespace UserManagement.Features.Roles.Requests.UpdateRole
 
         private async Task SaveUpdate()
         {
-            _context.Roles.Update(_requestedRole);
-            var affectedRows = await _context.SaveChangesAsync();
+            var affectedRows = await _repository.UpdateEntity(_requestedRole);
 
             if (affectedRows <= 0)
                 Messaging.ReturnErrorMessage("Failed to modify the specified role. Please try again later.");

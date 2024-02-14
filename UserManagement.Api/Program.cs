@@ -1,12 +1,12 @@
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using static UserManagement.SharedKernel.DependencyInjection;
-using static UserManagement.Features.DependencyInjection;
-using static UserManagement.Features.Bindings;
 using UserManagement.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
+using static UserManagement.SharedKernel.DependencyInjection;
+using static UserManagement.Features.DependencyInjection;
+using static UserManagement.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,9 +46,10 @@ builder.Services.AddSwaggerGen(cnf => {
 var dbContextCnn = builder.Configuration.GetConnectionString("UserManagementDB");
 builder.Services.AddDbContext<UserManagerDbContext>(x => x.UseSqlServer(dbContextCnn));
 
-CreateBindings();
+AddBindings();
 builder.Services.AddMessaging();
 builder.Services.AddFeatures();
+builder.Services.AddRepositories();
 
 AddLogs(builder);
 
