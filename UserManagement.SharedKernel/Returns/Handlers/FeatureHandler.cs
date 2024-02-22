@@ -14,9 +14,9 @@ namespace UserManagement.SharedKernel.Retornos
 {
     public abstract class FeatureHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
-        public FeatureHandler(IMessaging mensageria, ILogger<FeatureHandler<TRequest, TResponse>> logger)
+        public FeatureHandler(IMessaging messaging, ILogger<FeatureHandler<TRequest, TResponse>> logger)
         {
-            Messaging = mensageria;
+            Messaging = messaging;
             Logger = logger;
         }
 
