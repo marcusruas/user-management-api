@@ -40,7 +40,7 @@ namespace UserManagement.Features.Roles.Requests.DeleteRole
         {
             _requestedRole.Deleted = true;
 
-            var affectedRows = await _repository.DeleteEntity(_requestedRole);
+            var affectedRows = await _repository.UpdateEntity(_requestedRole);
 
             if (affectedRows <= 0)
                 Messaging.ReturnErrorMessage("Failed to delete the specified role. Please try again later.");
