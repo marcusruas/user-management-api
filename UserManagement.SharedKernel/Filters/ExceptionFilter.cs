@@ -31,15 +31,15 @@ namespace UserManagement.Retornos.Filters
 
         private void GenerateResult(ExceptionContext context)
         {
-            string mensagemErro;
+            string errorMessage;
 
             if (context.Exception is ControlledException exception)
-                mensagemErro = exception.DefaultMessage;
+                errorMessage = exception.DefaultMessage;
             else
-                mensagemErro = "Your request could not be processed. Please check the data and try again.";
+                errorMessage = "Your request could not be processed. Please check the data and try again.";
 
             var messaging = context.HttpContext.GetService<IMessaging>();
-            var model =  new ApiResult<string>(false, mensagemErro, messaging.Messages);
+            var model =  new ApiResult<string>(errorMessage, messaging.Messages);
 
             context.Result = new ObjectResult(model);
         }

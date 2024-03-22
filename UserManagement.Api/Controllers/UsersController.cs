@@ -12,7 +12,7 @@ namespace UserManagement.Api.Controllers
         public UsersController(IMediator mediador) : base(mediador) { }
 
         [HttpPost]
-        public async Task<ApiResult<bool>> CreateUser([FromBody] CreateUserRequest request)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
             => await ProcessRequest(request);
     }
 }

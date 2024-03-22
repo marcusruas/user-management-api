@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using UserManagement.SharedKernel.Returns;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UserManagement.SharedKernel.Retornos
 {
@@ -20,21 +21,15 @@ namespace UserManagement.SharedKernel.Retornos
         /// <summary>
         /// Passes the object of type <see cref="IRequest" /> to the mediator of type <see cref="IMediator"/> and returns the formatted response ready for the endpoint
         /// </summary>
-        protected async Task<ApiResult<T>> ProcessRequest<T>(IRequest<T> request)
+        protected async Task<IActionResult> ProcessRequest<T>(IRequest<T> request)
         {
             var result = await Mediator.Send(request);
-            return StandardResult(result);
-        }
 
-        /// <summary>
-        /// Converts the passed object to the standard return format for endpoints
-        /// </summary>
-        protected ApiResult<T> StandardResult<T>(T data)
-        {
             var messaging = HttpContext.GetService<IMessaging>();
-            Response.StatusCode = (int)GetStatusCodeResult(messaging);
+            var statusCode = (int)GetStatusCodeResult(messaging);
 
-            return new ApiResult<T>(data, messaging.Messages);
+            var defaultResult = new ApiResult<T>(result, messaging.Messages);
+            return StatusCode(statusCode, defaultResult);
         }
 
         private HttpStatusCode GetStatusCodeResult(IMessaging messaging)

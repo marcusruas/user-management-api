@@ -8,6 +8,6 @@ namespace UserManagement.Domain.ApplicationConfigs.Entities
 {
     public class ApplicationConfigs
     {
-        public RSASettings RSASettings { get; set; }
+
     }
 }

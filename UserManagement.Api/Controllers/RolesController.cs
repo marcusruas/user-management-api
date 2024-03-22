@@ -17,23 +17,23 @@ namespace UserManagement.Api.Controllers
         public RolesController(IMediator mediador) : base(mediador) { }
 
         [HttpGet]
-        public async Task<ApiResult<PaginatedList<RoleDto>>> GetAllRoles([FromQuery] GetAllRolesRequest request)
+        public async Task<IActionResult> GetAllRoles([FromQuery] GetAllRolesRequest request)
             => await ProcessRequest(request);
 
         [HttpGet("{id}")]
-        public async Task<ApiResult<RoleDto>> GetRoleById(Guid id)
+        public async Task<IActionResult> GetRoleById(Guid id)
             => await ProcessRequest(new GetRoleByIdRequest(id));
 
         [HttpPut("{id}")]
-        public async Task<ApiResult<bool>> UpdateRole(Guid id, [FromBody] RoleUpdateBody request)
+        public async Task<IActionResult> UpdateRole(Guid id, [FromBody] RoleUpdateBody request)
             => await ProcessRequest(new UpdateRoleRequest(id, request));
 
         [HttpPost]
-        public async Task<ApiResult<bool>> CreateRole([FromBody] CreateRoleRequest request)
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleRequest request)
             => await ProcessRequest(request);
 
         [HttpDelete("{id}")]
-        public async Task<ApiResult<bool>> DeleteRole(Guid id)
+        public async Task<IActionResult> DeleteRole(Guid id)
             => await ProcessRequest(new DeleteRoleRequest(id));
     }
 }
