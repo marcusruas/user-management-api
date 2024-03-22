@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace UserManagement.SharedKernel.Extensions
 {
@@ -65,6 +66,21 @@ namespace UserManagement.SharedKernel.Extensions
             var normalizedText = text.RemoveAccents();
 
             return normalizedText != formattedText;
+        }
+
+        /// <summary>
+        /// Converts a string to SHA256
+        /// </summary>
+        public static string ToSHA256(this string text)
+        {
+            var shaService = SHA256.Create();
+            string hash = string.Empty;
+            byte[] bytes = shaService.ComputeHash(Encoding.ASCII.GetBytes(text));
+            foreach (byte theByte in bytes)
+            {
+                hash += theByte.ToString("x2");
+            }
+            return hash;
         }
     }
 }

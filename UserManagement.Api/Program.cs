@@ -73,8 +73,6 @@ var app = builder.Build();
 
 app.UseCors("FrontEndLocalPolicy");
 
-CreateDatabase(app);
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -103,13 +101,4 @@ void AddLogs(WebApplicationBuilder builder)
                 .CreateLogger();
 
     builder.Logging.AddSerilog(Log.Logger);
-}
-
-void CreateDatabase(WebApplication app)
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbContext = scope.ServiceProvider.GetRequiredService<UserManagerDbContext>();
-        dbContext.Database.EnsureCreated();
-    }
 }

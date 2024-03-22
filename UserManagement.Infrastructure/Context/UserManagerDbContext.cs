@@ -33,7 +33,7 @@ namespace UserManagement.Infrastructure.Context
                 builder.Property(x => x.Email).HasMaxLength(120).IsRequired();
                 builder.Property(x => x.UserName).HasMaxLength(20).IsRequired();
                 builder.Property(x => x.CPF).HasMaxLength(11).IsRequired();
-                builder.Property(x => x.Password).HasMaxLength(200).IsRequired();
+                builder.Property(x => x.Password).HasMaxLength(60).IsRequired();
             });
         }
     }
